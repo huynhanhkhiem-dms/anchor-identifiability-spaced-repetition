@@ -8,25 +8,28 @@ Author: **Huynh Anh Khiem**
 Faculty of Information Technology, Ton Duc Thang University, Ho Chi Minh City, Vietnam  
 ORCID: `0009-0007-7210-174X`
 
-## What this repository contains
+## Public artifacts
 
-This repository provides the code and derived artifacts needed to inspect and rerun the main theoretical and empirical checks reported in the manuscript:
+The repository exposes the reproduction files directly:
 
-- NumPy implementation of the anchored forgetting-curve family and FSRS-6 state recursion;
-- exact-anchor Fisher-information and dynamic-invariance checks;
-- the benchmark-matched field-gate analysis for 1,000 Anki collections;
-- the fixed 150-collection 21-parameter nuisance-adjusted profile runner;
-- a Colab notebook that downloads gated source partitions after authentication and executes the frozen pipeline;
-- deterministic scheduling-sensitivity code; and
-- aggregate derived result summaries used in the manuscript.
+- `code/gate_design_measure.py` — frozen 1,000-collection reduced-information gate and sensitivity analysis;
+- `analysis/run_full_profile_checkpoint.py` — resumable fixed 150-collection 21-parameter profile runner;
+- `analysis/field_gate_colab.ipynb` — clean Colab entry point for obtaining the gated data and rerunning the frozen analysis;
+- `code/srslib/memory.py` — anchored forgetting curves and FSRS-6 state recursion;
+- `code/srslib/theory.py` — Fisher-information and nuisance-profile utilities;
+- `code/decision_sensitivity.py` — deterministic off-anchor scheduling-sensitivity check;
+- `requirements.txt` and `data/BENCHMARK_COMMIT.txt` — pinned environment and benchmark revision; and
+- `results/field_gate_summary.json` / `.csv` — aggregate derived manuscript results.
 
 ## Raw data are not redistributed
 
-The field analysis uses `open-spaced-repetition/anki-revlogs-10k` (DOI `10.57967/hf/3435`). The upstream license asks users not to redistribute the data publicly. Accordingly, this repository does **not** contain raw review logs. Reproduction requires obtaining access from the upstream Hugging Face dataset and then running the notebook/scripts here.
+The empirical analysis uses `open-spaced-repetition/anki-revlogs-10k` (DOI `10.57967/hf/3435`). The upstream dataset requires users to accept access conditions and its license asks users not to redistribute the data publicly. Raw review logs are therefore **not** copied into this repository.
 
-Dataset: https://huggingface.co/datasets/open-spaced-repetition/anki-revlogs-10k
+Upstream dataset: https://huggingface.co/datasets/open-spaced-repetition/anki-revlogs-10k
 
-## Frozen analysis design
+The Colab notebook downloads the source data only after the researcher authenticates to Hugging Face and has accepted the dataset conditions.
+
+## Frozen design
 
 - SRS benchmark commit: `1053082`
 - Random seed: `20260817`
@@ -34,37 +37,36 @@ Dataset: https://huggingface.co/datasets/open-spaced-repetition/anki-revlogs-10k
 - Full nuisance-adjusted profile: fixed 150-collection subsample
 - `fsrs-optimizer==6.5.0`
 
-The analysis preserves the pre-specified outcome even when reduced and full-profile summaries disagree. Thresholds, seeds, and sample sizes should not be changed to obtain a more favorable result.
+The design preserves the pre-specified outcome when reduced and full-profile summaries disagree. Seeds, sample sizes, thresholds, and the analysis population should not be changed after inspecting results to obtain a more favorable conclusion.
 
-## Reproducibility package
+## Reproduction
 
-Download `anchor_reproducibility_package.zip` from this repository. It contains the complete clean source tree used for the public reproducibility package: core FSRS/theory code, field-gate scripts, full-profile checkpoint runner, Colab notebook, frozen configuration, and aggregate derived results.
-
-After extracting:
+For the deterministic scheduling check:
 
 ```bash
 python -m pip install -r requirements.txt
-python code/decision_sensitivity.py
+PYTHONPATH=code python code/decision_sensitivity.py
 ```
 
-For the full gated-data rerun, open `analysis/field_gate_colab.ipynb`. It authenticates to Hugging Face, downloads the selected upstream partitions, applies the benchmark-matched filters, runs the 1,000-collection reduced analysis, and resumes the fixed 150-collection full-profile analysis from checkpoints.
+For the review-log analysis, open `analysis/field_gate_colab.ipynb`. It authenticates to Hugging Face, clones the SRS benchmark, checks out commit `1053082`, downloads the gated upstream dataset, and calls the frozen analysis with 1,000 collections, 150 full profiles, and seed `20260817`.
 
-## Reported aggregate field results
+## Aggregate field results
 
-The repository includes `results/field_gate_summary.json` and `.csv`. Headline values include:
+The public derived summaries report:
 
 - reduced primary median shape s.e. `0.01636`;
+- reduced 10th–90th percentile `0.0050–0.0783`;
 - full 21-parameter median shape s.e. `0.02257`;
-- full-profile 10th-90th percentile `0.0085-0.0935`;
+- full-profile 10th–90th percentile `0.0085–0.0935`;
 - 35/150 (`23.3%`) collections in the descriptive high-uncertainty band; and
 - Spearman association between predicted uncertainty and cross-refit instability `rho = 0.467`.
 
-These are aggregate derived results only. Collection-level raw review data remain at the upstream gated source.
+These are aggregate derived values. Raw review-level records remain solely at the upstream gated source.
 
 ## Repository scope
 
-This public repository is intentionally clean: no manuscript drafts, editor correspondence, internal review notes, AI/chat transcripts, superseded `v1/v2/v3` files, or raw gated review logs are included.
+This repository intentionally excludes manuscript drafts, editor correspondence, internal review notes, chat transcripts, superseded `v1/v2/v3` files, and raw gated review logs.
 
 ## License
 
-Code in this repository is released under the MIT License. The upstream Anki review-log dataset remains governed by its own license and access conditions.
+Repository code is released under the MIT License. The upstream Anki dataset remains governed by its own license and access conditions.
