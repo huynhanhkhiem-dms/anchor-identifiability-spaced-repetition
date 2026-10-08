@@ -1,0 +1,26 @@
+field,value
+study,Policy-Surface Identifiability in Adaptive Memory Scheduling
+analysis_status,reported aggregate results from the frozen field-gate analysis
+benchmark_commit,1053082
+random_seed,20260817
+reduced_analysis_collections,1000
+full_profile_collections,150
+reduced_primary_median_se,0.01636
+reduced_primary_p10_se,0.005
+reduced_primary_p90_se,0.0783
+reduced_median_se_range_across_12_sensitivity_cells,"[0.0059, 0.0168]"
+full_profile_median_se,0.02257
+full_profile_p10_se,0.0085
+full_profile_p90_se,0.0935
+full_profile_low_count,70
+full_profile_intermediate_count,45
+full_profile_high_count,35
+full_profile_high_fraction,0.233
+median_scored_reviews_per_collection,10582
+scored_reviews_p10,1643
+scored_reviews_p90,81221
+median_log_interval_dispersion,1.339
+median_fraction_within_10pct_anchor,0.0387
+median_fraction_within_5pct_anchor,0.0189
+spearman_predicted_uncertainty_vs_cross_refit_instability,0.467
+raw_data_redistributed,false
